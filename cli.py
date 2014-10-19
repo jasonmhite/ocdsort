@@ -1,6 +1,6 @@
 import click
 from db import init_db, Database
-
+from util import *
 from sort import sort_file
 
 TARGET_DIR = "/home/jmhite/Anime"
@@ -28,7 +28,7 @@ def do_sort(filename, copy):
 
 cli.add_command(do_sort)
 
-@click.command("scan")
+#@click.command("scan")
 
 @click.group("list")
 def list_group():
@@ -50,14 +50,14 @@ def list_aliases():
     padnames = [s.ljust(maxlen) for s in parents]
 
     all_matches = dict()
-    for p, a in zip(padnames, aliases):
+    for (p, a) in zip(padnames, aliases):
         if p != a:
             if p in all_matches:
                 all_matches[p].append(a)
             else:
                 all_matches[p] = [a]
 
-    sstring = ["│ {}│ {}".format(s, ", ".join(a)) for (s, a) in all_matches.items()]
+    sstring = ["│ {}│ {}".format(s, " • ".join(a)) for (s, a) in all_matches.items()]
     for s in sorted(sstring):
         click.echo("  {}".format(s))
 
@@ -73,8 +73,7 @@ def add_new():
 @click.command("show")
 @click.option("name", prompt=True)
 def add_show(name):
-    click.echo(click.style("Add show: {}".format(name), fg="blue", bold=True))
-    if read_yn():
+    if click.confirm(click.style("Add show: {}".format(name), fg="blue", bold=True)):
         db.add_show(name)
 
 add_new.add_command(add_show)
@@ -89,75 +88,35 @@ def delete():
 def delete_show(name):
     if name is None:
         all_shows = db.all_shows
-        sel = read_sel("Please select a show to delete:", all_shows)
-        if sel is not None:
-            to_delete = all_shows[sel]
-        else: to_delete = None
+        to_delete = read_sel("Please select a show to delete:", all_shows)
     else:
         to_delete = name
+    # TODO: Validate the name?
 
     if to_delete is not None:
-        click.echo(click.style("Will delete: {}".format(to_delete), fg="red", bold=True))
-        if read_yn():
+        if click.confirm(click.style("Will delete: {}".format(to_delete), fg="red", bold=True)):
             db.delete_show(to_delete)
 
 @click.command("alias")
 @click.option("--name", type=click.Choice(db.all_aliases))
 def delete_alias(name):
     if name is None:
-        all_aliases = db.all_aliases
-        sel = read_sel("Please select an alias to delete:", all_aliases)
-        if sel is not None:
-            to_delete = all_aliases[sel]
-        else: to_delete = None
+        all_aliases = set(db.all_aliases)
+        all_names = set(db.all_shows)
+
+        aliases = list(all_aliases - all_aliases.intersection(all_names))
+        to_delete = read_sel("Please select an alias to delete:", aliases)
     else:
+        # TODO: Validate name?
         to_delete = name
 
     if to_delete is not None:
-        click.echo(click.style("Will delete: ".format(to_delete), fg="red", bold=True))
-        if read_yn():
+        if click.confirm(click.style("Will delete: {}".format(to_delete), fg="red", bold=True)):
             db.delete_alias(to_delete)
 
 cli.add_command(delete)
 delete.add_command(delete_show)
 delete.add_command(delete_alias)
-
-
-# Replace with click.prompt()
-def read_sel(heading, choices):
-    sel = None
-    click.echo(click.style(heading + "\n", fg="blue", bold=True))
-    imax = len(str(len(choices)))
-    for (i, item) in enumerate(choices):
-        click.echo("  │ {}".format(i).ljust(imax) + " │ {}".format(item))
-    click.echo("")
-
-    while True:
-        sel = input("choice (q to skip): ")
-        if sel == "q":
-            sel = None
-            break
-        elif sel.isdigit():
-            try:
-                sel = int(sel)
-                if sel in range(len(choices)):
-                    break
-            except:
-                continue
-        else:
-            continue
-
-    return(sel)
-
-# replace with click.confirm()
-def read_yn():
-    sel = None
-    while True:
-        sel = input("confirm (y/n): ")
-        if sel == "y":
-            return(True)
-        elif sel == "n":
-            return(False)
 
 if __name__ == "__main__":
     cli()
