@@ -1,9 +1,9 @@
 import click
-from db import init_db, Database
-from util import *
-from sort import sort_file
+from .db import init_db, Database
+from .util import *
+from .sort import sort_file
 import os
-import config
+from . import config
 
 # Config support could be a lot better
 # Maybe a startup() function to load stuff?

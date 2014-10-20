@@ -1,7 +1,7 @@
 import yaml
 import os
 import click
-from db import init_db
+from .db import init_db
 
 # This is a half-assed config setup and it really doesn't support
 # any location for the config file other than default, though some of

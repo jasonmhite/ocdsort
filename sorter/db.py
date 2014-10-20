@@ -4,14 +4,28 @@ import difflib
 
 __all__ = ["Database"]
 
-def init_db(filename):
-    with open('./init.sql') as f:
-        sql = f.read()
-        f.close()
+init_sql = """
+begin transaction;
+    pragma foreign_keys = on;
+    create table Shows(
+        show_id integer primary key autoincrement,
+        show_name text,
+        unique(show_name)
+    );
+    create table Aliases(
+        alias_id integer primary key autoincrement,
+        show_id integer,
+        alias_name text,
+        foreign key(show_id) references Shows(show_id) on delete cascade,
+        unique(alias_name)
+    );
+commit;
+"""
 
+def init_db(filename):
     with sq.connect(filename) as con:
         cur = con.cursor()
-        cur.executescript(sql)
+        cur.executescript(init_sql)
 
 class Database(object):
 
@@ -173,23 +187,3 @@ class Database(object):
         # Determine unique matches
         s = set([self.get_parent(i) for i in m])
         return(s)
-
-
-if __name__ == "__main__":
-    name = "test.db"
-    try:
-        sp.check_output('rm {}'.format(name), shell=True)
-    except: pass
-
-    init_db(name)
-    db = Database(name)
-    db.add_show("Test show")
-    db.add_show("another show")
-    db.add_show("Tjst Show")
-    db.add_alias("Tqst show", "Test Show")
-    print(db.all_shows)
-    print(db.all_aliases)
-    print(db.lookup("Tqst show"))
-    print(db.lookup("Tqst shdw"))
-    print(db.fuzzy_lookup("Tqzt show"))
-    print(db.fuzzy_lookup("alskjslfj"))

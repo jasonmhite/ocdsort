@@ -1,7 +1,7 @@
 import click
 import os
 import re
-import config
+from . import config
 
 __all__ = ["read_sel", "scan_tree"]
 
