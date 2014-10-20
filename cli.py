@@ -3,23 +3,17 @@ from db import init_db, Database
 from util import *
 from sort import sort_file
 import os
+import config
 
-TARGET_DIR = "/home/jmhite/Anime"
+# Config support could be a lot better
+# Maybe a startup() function to load stuff?
 
-db = Database("./test.db")
+TARGET_DIR = config.config["paths"]["dest"]
+db = Database(config.config["paths"]["db"])
 
 @click.group()
 def cli():
     """Sort shows"""
-
-@click.command("init")
-@click.argument("database_name")
-def init(database_name):
-    """Initializes default database and config file"""
-    click.echo("Building new database: {}".format(database_name))
-    init_db(database_name)
-
-cli.add_command(init)
 
 @click.command("sort")
 @click.argument("filename", type=click.Path(exists=True))

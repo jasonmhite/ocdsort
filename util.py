@@ -1,6 +1,7 @@
 import click
 import os
 import re
+import config
 
 __all__ = ["read_sel", "scan_tree"]
 
@@ -20,7 +21,7 @@ def read_sel(header, options):
     else:
         return(options[sel - 1])
 
-MEDIA_FILES = ["mkv", "mp4", "avi", "m4v"]
+MEDIA_FILES = config.config["settings"]["media_extensions"]
 MEDIA_PATTERN = re.compile(".*\.(?:{})".format("|".join(MEDIA_FILES)))
 
 def scan_tree(root):
