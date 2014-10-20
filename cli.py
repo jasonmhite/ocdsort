@@ -2,6 +2,7 @@ import click
 from db import init_db, Database
 from util import *
 from sort import sort_file
+import os
 
 TARGET_DIR = "/home/jmhite/Anime"
 
@@ -28,7 +29,19 @@ def do_sort(filename, copy):
 
 cli.add_command(do_sort)
 
-#@click.command("scan")
+@click.command("scan")
+@click.option("--copy", is_flag=True)
+@click.argument("filename", type=click.Path(exists=True))
+def scan_and_sort(filename, copy):
+    """Recursively scan for media files and sort matched entries."""
+    assert os.path.isdir(filename)
+    files = scan_tree(filename)
+    for filename in files:
+        sort_file(db, filename, copy)
+
+
+
+cli.add_command(scan_and_sort)
 
 @click.group("list")
 def list_group():
