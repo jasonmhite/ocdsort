@@ -22,7 +22,7 @@ def read_sel(header, options):
         return(options[sel - 1])
 
 MEDIA_FILES = config.config["settings"]["media_extensions"]
-MEDIA_PATTERN = re.compile(".*\.(?:{})".format("|".join(MEDIA_FILES)))
+MEDIA_PATTERN = re.compile(".*\.(?:{})$".format("|".join(MEDIA_FILES)))
 
 def scan_tree(root):
     click.echo(click.style("Scanning folders:", bold=True))
