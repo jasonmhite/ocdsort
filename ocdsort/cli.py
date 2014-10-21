@@ -29,7 +29,7 @@ try:
 
         sys.exit(0)
 except IndexError:
-    continue
+    pass
 
 import click
 from .db import init_db, Database
