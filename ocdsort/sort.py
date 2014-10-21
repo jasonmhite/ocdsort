@@ -45,7 +45,7 @@ def sort_file(db, filename, copy, verb=False, learn=False):
     if id_show_name is None:
         if learn:
             click.echo(click.style(" Show <{}> is not known".format(show_name), fg="blue"))
-            sel = click.prompt(" (s)kip [default], (l)earn, (a)lias, (x) learn-as-alias", type=click.Choice(['s', 'l', 'a']))
+            sel = click.prompt(" (s)kip [default], (l)earn, (a)lias, (x) learn-as-alias", type=click.Choice(['s', 'l', 'a', 'x']))
 
             if sel == 'l':
                 if click.confirm("  Learn show {}".format(show_name)):
