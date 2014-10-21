@@ -10,7 +10,7 @@ TARGET_DIR = config.config["paths"]["dest"]
 
 def sort_file(db, filename, copy, learn=False):
     # This could obviously be less ridiculous
-    g = guess_file_info(filename)
+    g = guess_file_info(os.path.basename(filename))
 
     try:
         show_name = g["series"]
