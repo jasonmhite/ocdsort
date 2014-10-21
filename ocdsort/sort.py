@@ -17,6 +17,7 @@ def sort_file(db, filename, copy, learn=False):
         ep = g["episodeNumber"]
     except KeyError:
         click.secho("Guessit could not parse <{}>".format(filename), fg="red")
+        return()
 
     id_show_name = db.lookup(show_name)
     fuzzed = False
