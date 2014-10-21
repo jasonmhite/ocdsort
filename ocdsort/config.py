@@ -9,7 +9,7 @@ from .db import init_db
 
 __all__ = ["config", "init_config", "load_config"]
 
-NAME = 'sorter'
+NAME = 'ocdsort'
 DEFAULT = os.path.join(os.environ["HOME"], ".config", NAME)
 
 DEFAULT_CONFIG = \
@@ -36,13 +36,11 @@ except KeyError:
     CONFIGDIR = DEFAULT
 
 def init_default_config():
-    if os.path.exists(DEFAULT_CONFIG_FILE):
-        click.echo(click.style("Default config already file exists at {}".format(CONFIGDIR), fg="red"))
-    else:
-        os.makedirs(CONFIGDIR)
-        click.echo("Writing {}".format(DEFAULT_CONFIG_FILE))
-        with open(DEFAULT_CONFIG_FILE, 'w') as f:
-            f.write(DEFAULT_CONFIG)
+    os.mkdir(CONFIGDIR)
+    click.echo("Writing {}".format(DEFAULT_CONFIG_FILE))
+    with open(DEFAULT_CONFIG_FILE, 'w') as f:
+        f.write(DEFAULT_CONFIG)
+
 
 def load_config(conf=DEFAULT_CONFIG_FILE):
     with open(conf) as f:
@@ -52,8 +50,10 @@ def load_config(conf=DEFAULT_CONFIG_FILE):
 
 try:
     config = load_config()
-except:
-    config = None
+except FileNotFoundError:
+    click.secho("No config file found, initializing at {}".format(CONFIGDIR), fg="red")
+    config = load_config()
+    init_db(config["paths"]["db"])
 
 if __name__ == "__main__":
     init_default_config()

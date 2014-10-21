@@ -1,9 +1,14 @@
-import click
-from .db import init_db, Database
-from .util import *
-from .sort import sort_file
-import os
-from . import config
+try:
+    import click
+    from .db import init_db, Database
+    from .util import *
+    from .sort import sort_file
+    import os
+    from . import config
+except FileNotFoundError:
+    from .config import init_default_config
+
+    init_default_config()
 
 # Config support could be a lot better
 # Maybe a startup() function to load stuff?
