@@ -12,8 +12,12 @@ def sort_file(db, filename, copy, learn=False):
     # This could obviously be less ridiculous
     g = guess_file_info(filename)
 
-    show_name = g["series"]
-    ep = g["episodeNumber"]
+    try:
+        show_name = g["series"]
+        ep = g["episodeNumber"]
+    except KeyError:
+        click.secho("Guessit could not parse <{}>".format(filename), fg="red")
+        return()
 
     id_show_name = db.lookup(show_name)
     fuzzed = False
