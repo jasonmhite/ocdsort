@@ -1,14 +1,37 @@
-try:
-    import click
-    from .db import init_db, Database
-    from .util import *
-    from .sort import sort_file
-    import os
-    from . import config
-except FileNotFoundError:
-    from .config import init_default_config
+import sys
+import os
+if sys.argv[1] == "init":
+    NAME = "ocdsort"
+    CONFDIR = os.path.join(os.environ["HOME"], ".config", NAME)
+    os.makedirs(CONFIDIR)
+    DEFAULT_CONFIG = \
+    """---
+    settings:
+        media_extensions:
+            - mkv
+            - mp4
+            - m4v
+            - avi
+    paths:
+        dest: {dest}
+        db: {conf}/main.db
+    """.format(
+        dest=os.path.join(os.environ["HOME"], "Anime"),
+        conf=CONFDIR
+    )
+    with open(os.path.join(CONFDIR, "config.yml"), 'w') as f:
+        f.write(DEFAULT_CONFIG)
+        from .db import init_db
 
-    init_default_config()
+        init_db(os.path.join(CONFDIR, 'main.db'))
+
+    sys.exit(0)
+
+import click
+from .db import init_db, Database
+from .util import *
+from .sort import sort_file
+from . import config
 
 # Config support could be a lot better
 # Maybe a startup() function to load stuff?
