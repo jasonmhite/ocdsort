@@ -1,11 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='sorter',
-    version='0.0.1',
-    packages=['sorter'],
+    name='ocdsort',
+    version='0.0.2',
+    packages=['ocdsort'],
+    install_requires=[
+        'click',
+        'guessit',
+        'pyaml',
+    ],
     entry_points="""
         [console_scripts]
-        anisorter=sorter.cli:cli
+        ocdsort=ocdsort.cli:cli
     """,
 )
