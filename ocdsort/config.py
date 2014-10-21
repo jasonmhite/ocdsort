@@ -52,7 +52,7 @@ def load_config(conf=DEFAULT_CONFIG_FILE):
 
 try:
     config = load_config()
-except:
+except FileNotFoundError:
     click.secho("No config file found, initializing at {}".format(CONFIGDIR), fg="red")
     config = load_config()
 
