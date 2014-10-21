@@ -111,13 +111,13 @@ def add_new():
     pass
 
 @click.command("show")
-@click.option("name", prompt=True)
+@click.option("--name", prompt=True)
 def add_show(name):
     if click.confirm(click.style("Add show: {}".format(name), fg="blue", bold=True)):
         db.add_show(name)
 
 @click.command("alias")
-@click.option("name", prompt=True)
+@click.option("--name", prompt=True)
 @click.option("--to", type=click.Choice(db.all_shows))
 def add_alias(name, to):
     if to is None:
