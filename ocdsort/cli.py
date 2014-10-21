@@ -58,13 +58,14 @@ cli.add_command(do_sort)
 @click.command("scan")
 @click.option("--copy", is_flag=True)
 @click.option("--learn", is_flag=True)
+@click.option("--verbose", is_flag=True)
 @click.argument("filename", type=click.Path(exists=True))
-def scan_and_sort(filename, copy, learn):
+def scan_and_sort(filename, copy, verbose, learn):
     """Recursively scan for media files and sort matched entries."""
     assert os.path.isdir(filename)
     files = scan_tree(filename)
     for filename in files:
-        sort_file(db, filename, copy, learn)
+        sort_file(db, filename, copy, verbose, learn)
 
 
 
