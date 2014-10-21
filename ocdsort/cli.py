@@ -1,31 +1,35 @@
 import sys
 import os
-if sys.argv[1] == "init":
-    NAME = "ocdsort"
-    CONFDIR = os.path.join(os.environ["HOME"], ".config", NAME)
-    os.makedirs(CONFDIR)
-    DEFAULT_CONFIG = \
-    """---
-    settings:
-        media_extensions:
-            - mkv
-            - mp4
-            - m4v
-            - avi
-    paths:
-        dest: {dest}
-        db: {conf}/main.db
-    """.format(
-        dest=os.path.join(os.environ["HOME"], "Anime"),
-        conf=CONFDIR
-    )
-    with open(os.path.join(CONFDIR, "config.yml"), 'w') as f:
-        f.write(DEFAULT_CONFIG)
-        from .db import init_db
 
-        init_db(os.path.join(CONFDIR, 'main.db'))
+try:
+    if sys.argv[1] == "init":
+        NAME = "ocdsort"
+        CONFDIR = os.path.join(os.environ["HOME"], ".config", NAME)
+        os.makedirs(CONFDIR)
+        DEFAULT_CONFIG = \
+        """---
+        settings:
+            media_extensions:
+                - mkv
+                - mp4
+                - m4v
+                - avi
+        paths:
+            dest: {dest}
+            db: {conf}/main.db
+        """.format(
+            dest=os.path.join(os.environ["HOME"], "Anime"),
+            conf=CONFDIR
+        )
+        with open(os.path.join(CONFDIR, "config.yml"), 'w') as f:
+            f.write(DEFAULT_CONFIG)
+            from .db import init_db
 
-    sys.exit(0)
+            init_db(os.path.join(CONFDIR, 'main.db'))
+
+        sys.exit(0)
+except IndexError:
+    continue
 
 import click
 from .db import init_db, Database
