@@ -9,7 +9,7 @@ from .db import init_db
 
 __all__ = ["config", "init_config", "load_config"]
 
-NAME = 'sorter'
+NAME = 'ocdsort'
 DEFAULT = os.path.join(os.environ["HOME"], ".config", NAME)
 
 DEFAULT_CONFIG = \
