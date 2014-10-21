@@ -25,10 +25,10 @@ MEDIA_FILES = config.config["settings"]["media_extensions"]
 MEDIA_PATTERN = re.compile(".*\.(?:{})$".format("|".join(MEDIA_FILES)))
 
 def scan_tree(root):
-    click.echo(click.style("Scanning folders:", bold=True))
+    click.echo(click.style("Scanning folders:", bold=True, fg="blue"))
     matches = []
     for root, dirnames, filenames in os.walk(root):
-        click.echo("  {}".format(root))
+        click.echo(click.style(" ╾┮ {}".format(root), bold=True))
         tmp_match = []
         for filename in filenames:
             if MEDIA_PATTERN.match(filename):
@@ -43,7 +43,8 @@ def pretty_print_tree(tree):
     try:
         final = tree.pop()
         for item in tree:
-            click.echo("   ├ {}".format(item))
-        click.echo("   └ {}".format(final))
+            click.echo("  ┝─╼ {}".format(item))
+        click.echo("  ┕─╼ {}".format(final))
     except IndexError:
-        click.echo(click.style("   └ None", fg="yellow"))
+        click.echo(click.style("  │", fg="yellow"))
+        click.echo(click.style("  ┕──╼", fg="yellow"))
