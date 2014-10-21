@@ -36,10 +36,11 @@ except KeyError:
     CONFIGDIR = DEFAULT
 
 def init_default_config():
-    os.makedirs(CONFIGDIR)
+    os.mkdir(CONFIGDIR)
     click.echo("Writing {}".format(DEFAULT_CONFIG_FILE))
     with open(DEFAULT_CONFIG_FILE, 'w') as f:
         f.write(DEFAULT_CONFIG)
+
 
 def load_config(conf=DEFAULT_CONFIG_FILE):
     with open(conf) as f:
@@ -52,6 +53,7 @@ try:
 except FileNotFoundError:
     click.secho("No config file found, initializing at {}".format(CONFIGDIR), fg="red")
     config = load_config()
+    init_db(config["paths"]["db"])
 
 if __name__ == "__main__":
     init_default_config()
