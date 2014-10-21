@@ -8,7 +8,7 @@ from . import config
 
 TARGET_DIR = config.config["paths"]["dest"]
 
-def sort_file(db, filename, copy):
+def sort_file(db, filename, copy, learn=False):
     # This could obviously be less ridiculous
     g = guess_file_info(filename)
 
@@ -35,7 +35,31 @@ def sort_file(db, filename, copy):
         click.echo(click.style(" Exact matches {} -> {}".format(show_name, id_show_name),fg="green"))
 
     if id_show_name is None:
-        click.echo(click.style(" Skipped {}".format(filename), fg="blue"))
+        if learn:
+            click.echo(click.style(" Show <{}> is not known".format(show_name), fg="blue"))
+            sel = click.prompt(" (s)kip [default], (l)earn, (a)lias, (x) learn-as-alias", type=click.choice(['s', 'l', 'a']))
+
+            if sel == 'l':
+                if click.confirm("  Learn show {}".format(show_name)):
+                    id_show_name = show_name
+                    db.add_show(id_show_name)
+
+            elif sel == 'a':
+                parent_name = read_sel("  Please choose a parent to alias {}".format(show_name), db.all_shows)
+                if parent_name is not None:
+                    if click.confirm("  Learn {} -> {}?".format(show_name, parent_name)):
+                        id_show_name = parent_name
+                        db.add_alias(id_show_name, show_name)
+
+            elif sel == 'x':
+                new_name = click.prompt("  New show name")
+                if click.confirm("  Add new show {} with alias {}".format(new_name, show_name)):
+                    id_show_name = new_name
+                    db.add_show(id_show_name)
+                    db.add_alias(show_name, id_show_name)
+
+        else:
+            click.echo(click.style(" Skipped {}".format(filename), fg="blue"))
     elif fuzzed:
         if click.confirm(click.style(" Add alias for {} -> {}?".format(show_name, id_show_name), fg="blue", bold=True)):
             db.add_alias(show_name, id_show_name)

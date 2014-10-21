@@ -25,13 +25,14 @@ cli.add_command(do_sort)
 
 @click.command("scan")
 @click.option("--copy", is_flag=True)
+@click.option("--learn", is_flag=True)
 @click.argument("filename", type=click.Path(exists=True))
-def scan_and_sort(filename, copy):
+def scan_and_sort(filename, copy, learn):
     """Recursively scan for media files and sort matched entries."""
     assert os.path.isdir(filename)
     files = scan_tree(filename)
     for filename in files:
-        sort_file(db, filename, copy)
+        sort_file(db, filename, copy, learn)
 
 
 
@@ -82,6 +83,20 @@ def add_new():
 def add_show(name):
     if click.confirm(click.style("Add show: {}".format(name), fg="blue", bold=True)):
         db.add_show(name)
+
+@click.command("alias")
+@click.option("name", prompt=True)
+@click.option("--to", type=click.Choice(db.all_shows))
+def add_alias(name, to):
+    if to is None:
+        all_shows = db.all_shows
+        to_alias = read_sel("Please select a target to alias:", all_shows)
+    else:
+        to_alias = name
+
+    if to_alias is not None:
+        if click.confirm(click.style("Alias {} -> {}".format(to_alias, name))):
+            db.add_alias(to_alias, name)
 
 add_new.add_command(add_show)
 cli.add_command(add_new)
