@@ -8,9 +8,13 @@ from . import config
 
 TARGET_DIR = config.config["paths"]["dest"]
 
-def sort_file(db, filename, copy, learn=False):
+def sort_file(db, filename, copy, verb=False, learn=False):
     # This could obviously be less ridiculous
-    g = guess_file_info(filename)
+    g = guess_file_info(os.path.basename(filename), options={"type": "episode"})
+
+    if verb:
+        click.echo("Match for {}:".format(filename))
+        click.echo(g.nice_string())
 
     try:
         show_name = g["series"]
