@@ -3,7 +3,7 @@ import os
 if sys.argv[1] == "init":
     NAME = "ocdsort"
     CONFDIR = os.path.join(os.environ["HOME"], ".config", NAME)
-    os.makedirs(CONFIDIR)
+    os.makedirs(CONFDIR)
     DEFAULT_CONFIG = \
     """---
     settings:
