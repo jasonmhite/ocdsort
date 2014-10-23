@@ -2,14 +2,16 @@ import guessit
 from guessit.plugins.transformers import Transformer, add_transformer
 from guessit.containers import PropertiesContainer, NoValidator
 from guessit.matcher import GuessFinder
-import ABC
+import abc
 
 # Parsers loosely based on how Flexget passes options to guessit
 
-class Parser(object):
-    __metaclass__ = ABC.ABCMeta
+__all__ = ["GuessitParser"]
 
-    @ABC.abstractmethod
+class Parser(object):
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
     def parse(self, name):
         raise(NotImplementedError)
 
