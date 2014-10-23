@@ -1,3 +1,4 @@
+# coding=UTF-8
 import sqlite3 as sq
 import subprocess as sp
 import difflib

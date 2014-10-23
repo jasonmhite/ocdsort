@@ -1,3 +1,4 @@
+# coding=UTF-8
 import guessit
 from guessit.plugins.transformers import Transformer, add_transformer
 from guessit.containers import PropertiesContainer, NoValidator
