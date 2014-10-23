@@ -2,20 +2,19 @@
 import click
 import os
 import shutil as sh
-from guessit import guess_file_info
+#from guessit import guess_file_info
 from string import capwords
 from .util import *
 from . import config
+from .parser import *
 
 TARGET_DIR = config.config["paths"]["dest"]
 
 def sort_file(db, filename, copy, verb=False, learn=False):
     # This could obviously be less ridiculous
-    g = guess_file_info(os.path.basename(filename), options={"type": "episode"})
+    #g = guess_file_info(os.path.basename(filename), options={"type": "episode"})
 
-    if verb:
-        click.echo("Match for {}:".format(filename))
-        click.echo(g.nice_string())
+    g = parse_episode(os.path.basename(filename))
 
     try:
         show_name = g["series"]
