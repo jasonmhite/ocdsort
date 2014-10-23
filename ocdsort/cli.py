@@ -132,6 +132,7 @@ def add_alias(name, to):
             db.add_alias(to_alias, name)
 
 add_new.add_command(add_show)
+add_new.add_command(add_alias)
 cli.add_command(add_new)
 
 @click.group("delete")
