@@ -65,5 +65,5 @@ class GuessitParser(Parser):
     # This is borrowed directly from Flexget
 
     def parse(self, name):
-        r = guessit.guess_file_info(name, self._guess_options)
+        r = guessit.guess_file_info(name, options=self._guess_options)
         return(r)
