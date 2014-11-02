@@ -4,6 +4,7 @@ import os
 
 try:
     if sys.argv[1] == "init":
+        from .schema import init_db
         NAME = "ocdsort"
         CONFDIR = os.path.join(os.environ["HOME"], ".config", NAME)
         os.makedirs(CONFDIR)
@@ -24,6 +25,8 @@ try:
         )
         with open(os.path.join(CONFDIR, "config.yml"), 'w') as f:
             f.write(DEFAULT_CONFIG)
+
+        init_db(os.path.join(CONFDIR, "main.db"))
 
         sys.exit(0)
 except IndexError:
