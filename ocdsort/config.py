@@ -2,6 +2,7 @@
 import yaml
 import os
 import click
+from .schema import init_db
 
 # This is a half-assed config setup and it really doesn't support
 # any location for the config file other than default, though some of
@@ -53,6 +54,7 @@ try:
 except FileNotFoundError:
     click.secho("No config file found, initializing at {}".format(CONFIGDIR), fg="red")
     config = load_config()
+    init_db(os.path.join(CONFIGDIR, "main.db"))
 
 if __name__ == "__main__":
     init_default_config()
