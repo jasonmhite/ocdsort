@@ -48,11 +48,11 @@ def load_config(conf=DEFAULT_CONFIG_FILE):
 
     return(yaml.load(cfg))
 
-try:
-    config = load_config()
-except FileNotFoundError:
-    click.secho("No config file found, initializing at {}".format(CONFIGDIR), fg="red")
-    config = load_config()
+#try:
+    #config = load_config()
+#except FileNotFoundError:
+    #click.secho("No config file found, initializing at {}".format(CONFIGDIR), fg="red")
+    #config = load_config()
 
 if __name__ == "__main__":
     init_default_config()
