@@ -24,9 +24,6 @@ try:
         )
         with open(os.path.join(CONFDIR, "config.yml"), 'w') as f:
             f.write(DEFAULT_CONFIG)
-            from .db import init_db
-
-            init_db(os.path.join(CONFDIR, 'main.db'))
 
         sys.exit(0)
 except IndexError:
