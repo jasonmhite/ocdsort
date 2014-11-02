@@ -8,6 +8,7 @@ import difflib
 
 
 class ShowDB(object):
+    def __init__(self, dbname)
     db = schema.db
 
     @property

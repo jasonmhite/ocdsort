@@ -30,7 +30,7 @@ except IndexError:
     pass
 
 import click
-from .db import init_db, Database
+from .db import ShowDB
 from .util import *
 from .sort import sort_file
 from . import config
@@ -39,7 +39,7 @@ from . import config
 # Maybe a startup() function to load stuff?
 
 TARGET_DIR = config.config["paths"]["dest"]
-db = Database(config.config["paths"]["db"])
+db = ShowDB(config.config["paths"]["db"])
 
 @click.group()
 def cli():
@@ -83,7 +83,7 @@ def list_shows():
 def list_aliases():
     click.echo(click.style("Known aliases:", fg="blue", bold=True))
     aliases = db.all_aliases
-    parents = [db.get_parent(i) for i in aliases]
+    parents = [db.lookup(i) for i in aliases]
 
     maxlen = max([len(i) for i in parents]) - 1
     padnames = [s.ljust(maxlen) for s in parents]
