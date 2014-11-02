@@ -8,7 +8,8 @@ import difflib
 
 
 class ShowDB(object):
-    def __init__(self, dbname)
+    def __init__(self, dbname):
+        self.db = pw.SqliteDatabase(dbname)
     db = schema.db
 
     @property
