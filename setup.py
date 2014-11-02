@@ -1,4 +1,4 @@
-from setuputils import setup
+from setuptools import setup
 
 setup(
     name='ocdsort',
