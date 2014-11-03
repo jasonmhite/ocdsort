@@ -10,6 +10,6 @@ __all__ = ["parse_episode"]
 p = ParserGuessit()
 
 def parse_episode(name):
-    r = p.parse(name, "episode", name)
+    r = p.parse_series(name, "episode", name)
 
     return({"series": r.series, "episodeNumber": r.episode})
