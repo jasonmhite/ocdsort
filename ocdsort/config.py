@@ -48,6 +48,7 @@ def load_config(conf=DEFAULT_CONFIG_FILE):
 
     return(yaml.load(cfg))
 
+config = load_config()
 #try:
     #config = load_config()
 #except FileNotFoundError:
