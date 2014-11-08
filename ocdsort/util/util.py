@@ -4,7 +4,7 @@ import os
 import re
 from .. import config
 
-__all__ = ["read_sel", "scan_tree"]
+__all__ = ["read_sel", "scan_tree", "ReList"]
 
 MEDIA_FILES = config.config["settings"]["media_extensions"]
 MEDIA_PATTERN = re.compile(".*\.(?:{})$".format("|".join(MEDIA_FILES)))
