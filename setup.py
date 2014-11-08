@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='ocdsort',
     version='0.0.2',
-    packages=['ocdsort', 'ocdsort.cli'],
+    packages=['ocdsort'],
     install_requires=[
         'click',
         'guessit',
