@@ -83,14 +83,14 @@ def list_group():
 
 @click.command("shows")
 def list_shows():
-    click.echo(click.style("Current shows:", fg="blue", bold=True))
+    click.echo(click.style(I("Current shows:"), fg="blue", bold=True))
     for show in db.all_shows:
         with INDENT as I:
             click.echo(I("│ {}".format(show)))
 
 @click.command("aliases")
 def list_aliases():
-    click.echo(click.style("Known aliases:", fg="blue", bold=True))
+    click.echo(click.style(I("Known aliases:"), fg="blue", bold=True))
     aliases = db.all_aliases
     parents = [db.lookup(i) for i in aliases]
 
@@ -107,7 +107,8 @@ def list_aliases():
 
     sstring = ["│ {}│ {}".format(s, " • ".join(a)) for (s, a) in all_matches.items()]
     for s in sorted(sstring):
-        click.echo("  {}".format(s))
+        with INDENT as I:
+            click.echo(I("{}".format(s)))
 
 
 list_group.add_command(list_shows)
