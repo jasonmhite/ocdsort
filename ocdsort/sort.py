@@ -6,7 +6,9 @@ import shutil as sh
 from string import capwords
 from .util import *
 from . import config
-from .parser import *
+from .parser import ParserGuessit
+
+P = ParserGuessit()
 
 TARGET_DIR = config.config["paths"]["dest"]
 
@@ -14,11 +16,11 @@ def sort_file(db, filename, copy, verb=False, learn=False):
     # This could obviously be less ridiculous
     #g = guess_file_info(os.path.basename(filename), options={"type": "episode"})
 
-    g = parse_episode(os.path.basename(filename))
+    g = P.parse_series(os.path.basename(filename))
 
     try:
-        show_name = g["series"]
-        ep = g["episodeNumber"]
+        show_name = g.series
+        ep = g.episode
     except KeyError:
         click.secho("Guessit could not parse <{}>".format(filename), fg="red")
         return()
