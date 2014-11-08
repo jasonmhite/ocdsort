@@ -2,6 +2,11 @@
 import sys
 import os
 
+#  Setup the indentation level so that it's available everywhere
+from .util.indent import Indent
+
+__builtins__.INDENT = Indent()
+
 try:
     if sys.argv[1] == "init":
         from .schema import init_db
