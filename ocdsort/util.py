@@ -3,52 +3,12 @@ import click
 import os
 import re
 from . import config
+from click import wrap_text
 
 __all__ = ["read_sel", "scan_tree"]
 
-def read_sel(header, options):
-    nopt = len(options)
-    imax = len(str(nopt))
-
-    click.echo(click.style(header + "\n", bold=True))
-
-    for i, item in enumerate(options):
-        click.echo("  |{}| {}".format(str(i + 1).center(imax + 2), item))
-    click.echo("")
-    sel = click.prompt("Please choose (0 to skip)", type=click.IntRange(0, nopt))
-
-    if sel == 0:
-        return(None)
-    else:
-        return(options[sel - 1])
-
 MEDIA_FILES = config.config["settings"]["media_extensions"]
 MEDIA_PATTERN = re.compile(".*\.(?:{})$".format("|".join(MEDIA_FILES)))
-
-def scan_tree(root):
-    click.echo(click.style("Scanning folders:", bold=True, fg="blue"))
-    matches = []
-    for root, dirnames, filenames in os.walk(root):
-        click.echo(click.style(" ╾┮ {}".format(root), bold=True))
-        tmp_match = []
-        for filename in filenames:
-            if MEDIA_PATTERN.match(filename):
-                matches.append(os.path.join(root, filename))
-                tmp_match.append(os.path.join(root, filename))
-        pretty_print_tree(tmp_match)
-
-
-    return(matches)
-
-def pretty_print_tree(tree):
-    try:
-        final = tree.pop()
-        for item in tree:
-            click.echo("  ┝─╼ {}".format(item))
-        click.echo("  ┕─╼ {}".format(final))
-    except IndexError:
-        click.echo(click.style("  │", fg="yellow"))
-        click.echo(click.style("  ┕──╼", fg="yellow"))
 
 class ReList(list):
     """
@@ -78,3 +38,76 @@ class ReList(list):
     def __iter__(self):
         for i in range(len(self)):
             yield self[i]
+
+
+class Indent(object):
+    def __init__(self, indent_char="  ", initial_indent=0, max_width=78):
+        self._ilevel = initial_indent
+        self._indent_char = indent_char
+        self._max_width = max_width
+
+    def indenter(self, s):
+        indent = self._ilevel * self._indent_char
+        indent2 = indent + self._indent_char
+        new_s = wrap_text(
+            s,
+            width=self._max_width,
+            initial_indent=indent,
+            subsequent_indent=indent2,
+        )
+        return(new_s)
+
+    def __enter__(self):
+        self._ilevel += 1
+        return(self.indenter)
+
+    def __exit__(self, type, value, tb):
+        self._ilevel -= 1
+
+
+def read_sel(header, options):
+    nopt = len(options)
+    imax = len(str(nopt))
+
+    click.echo(click.style(header + "\n", bold=True))
+
+    for i, item in enumerate(options):
+        click.echo("  |{}| {}".format(str(i + 1).center(imax + 2), item))
+    click.echo("")
+    sel = click.prompt("Please choose (0 to skip)", type=click.IntRange(0, nopt))
+
+    if sel == 0:
+        return(None)
+    else:
+        return(options[sel - 1])
+
+
+
+def scan_tree(root):
+    click.echo(click.style("Scanning folders:", bold=True, fg="blue"))
+    matches = []
+    for root, dirnames, filenames in os.walk(root):
+        click.echo(click.style(" ╾┮ {}".format(root), bold=True))
+        tmp_match = []
+        for filename in filenames:
+            if MEDIA_PATTERN.match(filename):
+                matches.append(os.path.join(root, filename))
+                tmp_match.append(os.path.join(root, filename))
+        pretty_print_tree(tmp_match)
+
+
+    return(matches)
+
+def pretty_print_tree(tree):
+    try:
+        final = tree.pop()
+        for item in tree:
+            click.echo("  ┝─╼ {}".format(item))
+        click.echo("  ┕─╼ {}".format(final))
+    except IndexError:
+        click.echo(click.style("  │", fg="yellow"))
+        click.echo(click.style("  ┕──╼", fg="yellow"))
+
+
+
+
