@@ -15,7 +15,7 @@ class IndentState(object):
         return("".join(self._state))
 
     @property
-    def extra_indent(self)
+    def extra_indent(self):
         return(self.as_string + self._state[-1])
 
     @property
@@ -49,7 +49,7 @@ class Indent(object):
         return(new_s)
 
     def __enter__(self, local_indent=None):
-        i = (indent_char if local_indent is None else local_indent)
+        i = (self._indent_char if local_indent is None else local_indent)
         self._indent_string += i
         return(self)
 
