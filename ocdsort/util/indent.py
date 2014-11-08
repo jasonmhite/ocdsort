@@ -9,7 +9,7 @@ class Indent(object):
         self._indent_char = indent_char
         self._max_width = max_width
 
-    def indenter(self, s):
+    def __call__(self, s):
         indent = self._ilevel * self._indent_char
         indent2 = indent + self._indent_char
         new_s = wrap_text(
@@ -22,7 +22,7 @@ class Indent(object):
 
     def __enter__(self):
         self._ilevel += 1
-        return(self.indenter)
+        return(self)
 
     def __exit__(self, type, value, tb):
         self._ilevel -= 1
