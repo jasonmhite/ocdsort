@@ -6,7 +6,7 @@ import shutil as sh
 from string import capwords
 from .util import *
 from . import config
-from .parser import ParserGuessit
+from .parsers import ParserGuessit
 
 P = ParserGuessit()
 

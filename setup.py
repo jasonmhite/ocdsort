@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ocdsort',
-    version='0.0.2',
+    version='0.0.3',
     packages=['ocdsort'],
     install_requires=[
         'click',
