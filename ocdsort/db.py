@@ -1,6 +1,6 @@
 import peewee as pw
-import schema
 import difflib
+from . import schema
 
 # TODO: subclasses for each table in the database?
 # TODO: Add methods to interact with the new metadata and episode tables
