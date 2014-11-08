@@ -83,7 +83,7 @@ def list_group():
 
 @click.command("shows")
 def list_shows():
-    click.echo(click.style(I("Current shows:"), fg="blue", bold=True))
+    click.echo(click.style(INDENT("Current shows:"), fg="blue", bold=True))
     for show in db.all_shows:
         with INDENT as I:
             click.echo(I("│ {}".format(show)))
