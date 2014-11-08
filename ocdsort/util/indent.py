@@ -49,9 +49,8 @@ class Indent(object):
         )
         return(new_s)
 
-    def __enter__(self, local_indent=None):
-        i = (self._indent_char if local_indent is None else local_indent)
-        self._indent_string += i
+    def __enter__(self):
+        self._indent_string += self._indent_char
         return(self)
 
     def __exit__(self, type, value, tb):
