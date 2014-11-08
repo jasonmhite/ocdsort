@@ -85,7 +85,8 @@ def list_group():
 def list_shows():
     click.echo(click.style("Current shows:", fg="blue", bold=True))
     for show in db.all_shows:
-        click.echo("  │ {}".format(show))
+        with INDENT as I:
+            click.echo(I("│ {}".format(show)))
 
 @click.command("aliases")
 def list_aliases():

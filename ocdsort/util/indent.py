@@ -4,6 +4,7 @@ from click import wrap_text
 # its own
 
 class IndentState(object):
+    __default_indent = "  "
     def __init__(self):
         self._state = []
 
@@ -17,7 +18,10 @@ class IndentState(object):
 
     @property
     def extra_indent(self):
-        return(self.as_string + self._state[-1])
+        try:
+            return(self.as_string + self._state[-1])
+        except IndexError:
+            return(self.as_string + self.__default_indent) # Ugly
 
     @property
     def level(self):
@@ -37,6 +41,7 @@ class Indent(object):
         self._max_width = max_width
 
         self._indent_string = IndentState()
+
         for i in range(initial_indent):
             self._indent_string += self._indent_char
 
